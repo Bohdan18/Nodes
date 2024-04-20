@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # запуск
-# tmux new-session -d -s massa_buyrolls_mainnet 'bash <(curl -s https://raw.githubusercontent.com/Bohdab18/nodes/main/massa_autobuy_rolls.sh) massa_password'
+# tmux new-session -d -s massa_buyrolls_mainnet 'bash <(curl -s https://raw.githubusercontent.com/Bohdan18/nodes/main/massa_autobuy_rolls.sh) massa_password'
 
 # стоп
 # tmux kill-session -t massa_buyrolls_mainnet 
