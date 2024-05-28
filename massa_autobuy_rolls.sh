@@ -21,7 +21,7 @@ do
   balance=$(./massa-client -p $massa_pass wallet_info | grep "Balance" | awk '{ print $3 }' | sed 's/candidate=//;s/,//')
   int_balance=${balance%%.*}
   if [ $int_balance -gt "99" ] ; then   
-    resp=$(./massa-client -p $massa_pass buy_rolls $massa_wallet_address 1 0)
+    resp=$(./massa-client -p $massa_pass buy_rolls $massa_wallet_address 1 0.01)
     echo "buy rolls"
   else
     echo "Less than 100"
