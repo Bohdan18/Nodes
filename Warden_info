@@ -1,0 +1,56 @@
+Установка
+Используйте наш скрипт дял быстрой установки, укажите имя вашего валидатора и дождитесь завершения установки.
+
+wget -q -O warden.sh https://api.nodes.guru/warden.sh && sudo chmod +x warden.sh && ./warden.sh && source $HOME/.bash_profile
+
+Создайте кошелек, не забудьте сохранить мнемонику:
+wardend keys add wallet
+
+Если у вас уже есть кошелек, вы можете восстановить его:
+wardend keys add wallet --recover
+
+# Set pruning
+sed -i \
+  -e 's|^pruning *=.*|pruning = "custom"|' \
+  -e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
+  -e 's|^pruning-interval *=.*|pruning-interval = "17"|' \
+  $HOME/.warden/config/app.toml
+
+# Download latest chain data snapshot
+curl "https://snapshots-testnet.nodejumper.io/wardenprotocol-testnet/wardenprotocol-testnet_latest.tar.lz4" | lz4 -dc - | tar -xf - -C "$HOME/.warden"
+
+Запросите токены в кране. 
+curl -XPOST -d '{"address": "YOUR_WALLET_ADDRESS"}' https://faucet.buenavista.wardenprotocol.org
+
+После полной синхронизации проверьте баланс, если все в порядке, переходите к созданию валидатора.
+wardend q bank balances $(wardend keys show wallet -a)
+
+Создайте валидатора (Вы можете добавить дополнительную информацию о вашем валидаторе в файле $HOME/.warden/validator.json):
+wardend tx staking create-validator $HOME/.warden/validator.json \
+    --from=wallet \
+    --chain-id=buenavista-1 \
+    --fees=500uward -y
+
+Дополнительно
+Просмотр логов:
+sudo journalctl -u wardend -f
+
+Перезапуск узла:
+sudo systemctl restart wardend
+
+Проверка статуса узла:
+curl localhost:26657/status
+
+Узнайте, синхронизирован ли узел, если результат false – это означает, что узел синхронизирован
+curl -s localhost:26657/status | jq .result.sync_info.catching_up
+
+Узнайте ваш valoper адрес:
+wardend keys show wallet --bech val -a
+
+Делегирование токенов (чтобы увеличить вашу ставку, делегируйте на ваш valoper адрес):
+wardend tx staking delegate YOUR_VALOPER_ADDRESS 1000000uward --from wallet --chain-id buenavista-1 --fees=500uward -y"
+
+Удаление узла:
+sudo systemctl stop wardend
+sudo systemctl disable wardend
+sudo rm -rf $(which wardend) $HOME/.wardend
