@@ -1,31 +1,34 @@
 Установка
-Используйте наш скрипт дял быстрой установки, укажите имя вашего валидатора и дождитесь завершения установки.
+1)Используйте наш скрипт дял быстрой установки, укажите имя вашего валидатора и дождитесь завершения установки.
 
 wget -q -O warden.sh https://api.nodes.guru/warden.sh && sudo chmod +x warden.sh && ./warden.sh && source $HOME/.bash_profile
 
-Создайте кошелек, не забудьте сохранить мнемонику:
+2)Создайте кошелек, не забудьте сохранить мнемонику:
 wardend keys add wallet
 
 Если у вас уже есть кошелек, вы можете восстановить его:
 wardend keys add wallet --recover
 
-# Set pruning
+3)# Set pruning
 sed -i \
   -e 's|^pruning *=.*|pruning = "custom"|' \
   -e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
   -e 's|^pruning-interval *=.*|pruning-interval = "17"|' \
   $HOME/.warden/config/app.toml
 
-# Download latest chain data snapshot
+4)# Download latest chain data snapshot
 curl "https://snapshots-testnet.nodejumper.io/wardenprotocol-testnet/wardenprotocol-testnet_latest.tar.lz4" | lz4 -dc - | tar -xf - -C "$HOME/.warden"
 
-Запросите токены в кране. 
-curl -XPOST -d '{"address": "YOUR_WALLET_ADDRESS"}' https://faucet.buenavista.wardenprotocol.org
+5)Перезапуск узла:
+sudo systemctl restart wardend
 
-После полной синхронизации проверьте баланс, если все в порядке, переходите к созданию валидатора.
+6)Запросите токены в кране. 
+https://faucet.buenavista.wardenprotocol.org
+
+7)После полной синхронизации проверьте баланс, если все в порядке, переходите к созданию валидатора.
 wardend q bank balances $(wardend keys show wallet -a)
 
-Создайте валидатора (Вы можете добавить дополнительную информацию о вашем валидаторе в файле $HOME/.warden/validator.json):
+8)Создайте валидатора (Вы можете добавить дополнительную информацию о вашем валидаторе в файле $HOME/.warden/validator.json):
 wardend tx staking create-validator $HOME/.warden/validator.json \
     --from=wallet \
     --chain-id=buenavista-1 \
