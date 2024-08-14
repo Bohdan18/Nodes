@@ -24,10 +24,10 @@ echo "--------------------------------------------------------------------------
 # Перезавантаження середовища для доступності gaianet CLI
 echo "Зачекайте 5 секунд, поки .bashrc оновлюється..."
 sleep 5
-source /root/.bashrc
+bash -c 'source /root/.bashrc'
 echo "Зачекайте 5 секунд, поки .bashrc оновлюється..."
 sleep 5
-source /root/.bashrc
+bash -c 'source /root/.bashrc'
 
 # Перевірка наявності команди gaianet
 if command -v gaianet &> /dev/null
