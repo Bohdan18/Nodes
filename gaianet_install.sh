@@ -7,15 +7,15 @@ echo "Оновлення та встановлення необхідних па
 echo "-----------------------------------------------------------------------------"
 
 # Оновлення та встановлення необхідних пакетів
-#sudo apt update -y
-#sudo apt-get update -y
+sudo apt update -y
+sudo apt-get update -y
 
 echo "-----------------------------------------------------------------------------"
 echo "Завантаження та виконання останньої версії скрипта установки GaiaNet Node"
 echo "-----------------------------------------------------------------------------"
 
 # Завантаження та виконання останньої версії скрипта установки GaiaNet Node
-#curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
+curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
 
 echo "-----------------------------------------------------------------------------"
 echo "Нода встановленна успішно"
