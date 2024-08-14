@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash <(curl -s https://github.com/Bohdan18/nodes/edit/main/gaianet_install.sh)
+# bash <(curl -s https://raw.githubusercontent.com/Bohdan18/nodes/main/gaianet_install.sh)
 
 # Оновлення та встановлення необхідних пакетів
 sudo apt update -y
