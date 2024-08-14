@@ -3,7 +3,7 @@
 # bash <(curl -s https://raw.githubusercontent.com/Bohdan18/nodes/main/gaiachatbot_install.sh)
 
 # Запит адреси гаманця у користувача
-read -p "Введіть адресу вашого гаманця: " WALLET_ADDRESS
+read -p "Введіть адресу Node ID: " WALLET_ADDRESS
 
 # Оновлення системи та встановлення необхідних пакетів
 sudo apt update && sudo apt upgrade -y
