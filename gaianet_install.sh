@@ -29,6 +29,24 @@ echo "Зачекайте 5 секунд, поки .bashrc оновлюється
 sleep 5
 source /root/.bashrc
 
+# Перевірка наявності команди gaianet
+if command -v gaianet &> /dev/null
+then
+    echo "GaiaNet встановлено та доступно."
+else
+    echo "GaiaNet не знайдено. Перевірка можливих шляхів установки."
+
+    # Перевірка стандартних шляхів
+    if [ -f /root/.gaianet/bin/gaianet ]; then
+        echo "Знаходження gaianet у /root/.gaianet/bin/"
+        export PATH=$PATH:/root/.gaianet/bin
+    else
+        echo "GaiaNet не знайдено. Перевірте шлях до установки або повторіть установку."
+        exit 1
+    fi
+fi
+
+
 echo "-----------------------------------------------------------------------------"
 echo "Ініціалізація GaiaNet з конфігурацією"
 echo "-----------------------------------------------------------------------------"
