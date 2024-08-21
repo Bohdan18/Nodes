@@ -5,9 +5,11 @@ read -p "Enter your phase (Kepler account seed): " PHRASE
 read -p "Enter NodeRpc URL (choose one from the provided list): " NODE_RPC
 read -p "Enter your API Key: " API_KEY
 
+# Клонуємо репозиторій
 git clone https://github.com/allora-network/allora-huggingface-walkthrough
-cd allora-huggingface-walkthrough
+cd allora-huggingface-walkthrough || exit
 
+# Налаштування даних для воркера
 mkdir -p worker-data
 chmod -R 777 worker-data
 
@@ -19,7 +21,9 @@ if [[ ! -f config.json ]]; then
 fi
 
 # Текст для запису у файл
-NEW_CONTENT='"wallet": {
+NEW_CONTENT=$(cat <<EOF
+{
+   "wallet": {
        "addressKeyName": "test",
        "addressRestoreMnemonic": "$PHRASE",
        "alloraHomeDir": "/root/.allorad",
@@ -112,13 +116,10 @@ NEW_CONTENT='"wallet": {
                "Token": "ARB"
            }
        }
-       
    ]
-}'
-
-# run our Flask app
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8010, debug=True)
+}
+EOF
+)
 
 # Запис нового тексту у файл
 echo "$NEW_CONTENT" > config.json
@@ -131,7 +132,8 @@ if [[ ! -f app.py ]]; then
 fi
 
 # Текст для запису у файл
-NEW_CONTENT='from flask import Flask, Response
+NEW_CONTENT=$(cat <<EOF
+from flask import Flask, Response
 import requests
 import json
 import pandas as pd
@@ -212,9 +214,51 @@ def get_inference(token):
 
 # run our Flask app
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8010, debug=True)'
+    app.run(host="0.0.0.0", port=8010, debug=True)
+EOF
+)
 
 # Запис нового тексту у файл
 echo "$NEW_CONTENT" > app.py
 
 echo "File app.py has been updated."
+
+if [[ ! -f docker-compose.yaml ]]; then
+    echo "File docker-compose.yaml does not exist."
+    exit 1
+fi
+
+# Текст для запису у файл
+NEW_CONTENT=$(cat <<EOF
+services:
+  inference:
+    container_name: inference-hf
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -u /app/app.py
+    ports:
+      - "8010:8010"  # Змінено порт  на 8010
+
+  worker:
+    container_name: worker
+    image: alloranetwork/allora-offchain-node:latest
+    volumes:
+      - ./worker-data:/data
+    depends_on:
+      - inference
+    env_file:
+      - ./worker-data/env_file
+  
+volumes:
+  inference-data:
+  worker-data:
+EOF
+)
+
+# Запис нового тексту у файл
+echo "$NEW_CONTENT" > docker-compose.yaml
+
+echo "File docker-compose.yaml has been updated."
+
+# Ініціалізація воркера та запуск
