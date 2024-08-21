@@ -1,5 +1,5 @@
 #!/bin/bash
-
+docker-compose -f $HOME/basic-coin-prediction-node/docker-compose.yml down
 # Запит змінних
 read -p "Enter your phase (Kepler account seed): " PHRASE
 read -p "Enter NodeRpc URL (choose one from the provided list): " NODE_RPC
@@ -262,3 +262,9 @@ echo "$NEW_CONTENT" > docker-compose.yaml
 echo "File docker-compose.yaml has been updated."
 
 # Ініціалізація воркера та запуск
+chmod +x init.config
+./init.config
+
+docker compose up --build -d
+
+docker compose logs -f
