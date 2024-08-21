@@ -150,8 +150,6 @@ def get_coingecko_url(token):
     base_url = "https://api.coingecko.com/api/v3/coins/"
     token_map = {
         'ETH': 'ethereum',
-        'SOL': 'solana',
-        'BTC': 'bitcoin',
         'BNB': 'binancecoin',
         'ARB': 'arbitrum'
     }
