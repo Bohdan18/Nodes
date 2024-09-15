@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd /
+source /root/.bashrc
 gaianet stop
 
 bash <(curl -s https://raw.githubusercontent.com/DOUBLE-TOP/guides/main/nesa/install.sh)
