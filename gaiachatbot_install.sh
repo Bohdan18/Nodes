@@ -29,7 +29,7 @@ import time
 from faker import Faker
 from datetime import datetime
 
-node_url = "https://$WALLET_ADDRESS.us.gaianet.network/v1/chat/completions"
+node_url = "https://$WALLET_ADDRESS.gaia.domains/chatbot-ui/index.html"
 
 faker = Faker()
 
